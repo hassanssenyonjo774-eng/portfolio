@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hassan Ssenyonjo</title>
+  <meta name="description" content="Hassan Ssenyonjo — aspiring web developer, AI enthusiast and future tech entrepreneur.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Lock screen -->
+  <section id="lock" class="lock">
+    <div class="lock-bg" id="lockBg"></div>
+    <div class="lock-top">
+      <div class="lock-date" id="lockDate"></div>
+      <div class="lock-time" id="lockTime"></div>
+    </div>
+    <div class="lock-note" id="lockNote">
+      <div class="lock-note-head"><span class="lock-note-app" id="lockNoteApp"></span><span>now</span></div>
+      <div class="lock-note-title" id="lockNoteTitle"></div>
+      <div class="lock-note-text" id="lockNoteText"></div>
+    </div>
+    <button class="lock-hint" id="unlockBtn">
+      <span class="lock-bar"></span>
+      Swipe up to unlock
+    </button>
+  </section>
+
+  <!-- Desktop -->
+  <main id="desktop" class="desktop" aria-hidden="true">
+    <div class="wallpaper" id="wallpaper"></div>
+
+    <header class="menubar">
+      <div class="menu-left">
+        <strong id="menuName"></strong>
+        <span class="menu-hide">Finder</span>
+        <span class="menu-hide">File</span>
+        <span class="menu-hide">Edit</span>
+        <span class="menu-hide">View</span>
+        <span class="menu-hide">Window</span>
+      </div>
+      <div class="menu-right">
+        <span class="menu-hide" aria-hidden="true">
+          <svg width="16" height="12" viewBox="0 0 16 12"><path fill="currentColor" d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0L8 11.5ZM3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.1 1.1a5 5 0 0 0-7 0L3.4 6.8ZM1.2 4.6a9.6 9.6 0 0 1 13.6 0l-1.1 1.1a8 8 0 0 0-11.4 0L1.2 4.6Z"/></svg>
+        </span>
+        <span class="menu-hide battery" aria-hidden="true"><span></span></span>
+        <span id="menuClock"></span>
+      </div>
+    </header>
+
+    <div id="windows"></div>
+
+    <nav class="dock" id="dock" aria-label="Dock"></nav>
+  </main>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
