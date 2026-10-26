@@ -23,16 +23,42 @@
       <div class="lock-note-title" id="lockNoteTitle"></div>
       <div class="lock-note-text" id="lockNoteText"></div>
     </div>
-    <span class="lock-act left" aria-hidden="true">
+    <button class="lock-act left" id="torchBtn" aria-label="Flashlight" aria-pressed="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M8 2h8v4l-2 3v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V9L8 6V2Z"/><path d="M8 6h8M12 13v2"/></svg>
-    </span>
-    <span class="lock-act right" aria-hidden="true">
+    </button>
+    <button class="lock-act right" id="cameraBtn" aria-label="Camera">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2.5L9 4h6l1.5 2H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z"/><circle cx="12" cy="13" r="3.6"/></svg>
-    </span>
+    </button>
     <button class="lock-hint" id="unlockBtn">
       <span class="lock-bar"></span>
       Swipe up to unlock
     </button>
+  </section>
+
+  <!-- Screen torch (used where the real flashlight can't be controlled) -->
+  <div class="screen-torch" id="screenTorch" hidden>
+    <span>Tap anywhere to turn off</span>
+  </div>
+
+  <!-- Camera (photos never leave the visitor's device) -->
+  <section class="cam" id="cam" hidden aria-label="Camera">
+    <video id="camVideo" autoplay playsinline muted></video>
+    <img id="camShot" alt="Your photo" hidden>
+    <div class="cam-top">
+      <button class="cam-round" id="camClose" aria-label="Close camera">✕</button>
+      <span class="cam-privacy">🔒 Photos stay on your device — nothing is uploaded</span>
+    </div>
+    <p class="cam-msg" id="camMsg" hidden></p>
+    <div class="cam-bottom" id="camLive">
+      <span class="cam-spacer"></span>
+      <button class="cam-shutter" id="camShutter" aria-label="Take photo"></button>
+      <button class="cam-round" id="camFlip" aria-label="Switch camera">⟲</button>
+    </div>
+    <div class="cam-bottom" id="camReview" hidden>
+      <button class="btn" id="camRetake">Retake</button>
+      <button class="btn" id="camShare" hidden>Share</button>
+      <button class="btn primary" id="camSave">Save photo</button>
+    </div>
   </section>
 
   <!-- Desktop -->

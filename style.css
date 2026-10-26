@@ -77,6 +77,56 @@ a { color: var(--accent); }
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
 }
 .lock-act svg { width: 22px; height: 22px; }
+.lock-act { transition: transform .15s, background .2s, color .2s; }
+.lock-act:active { transform: scale(.9); }
+.lock-act.on { background: #fff; color: #111; }
+
+/* ---------------- Screen torch ---------------- */
+.screen-torch {
+  position: fixed; inset: 0; z-index: 300; background: #fff; cursor: pointer;
+  display: flex; align-items: flex-end; justify-content: center; padding-bottom: 40px;
+  color: rgba(0,0,0,.35); font-size: 13px; animation: fade .2s;
+}
+.screen-torch[hidden] { display: none; }
+
+/* ---------------- Camera ---------------- */
+.cam { position: fixed; inset: 0; z-index: 300; background: #000; animation: fade .2s; }
+.cam[hidden] { display: none; }
+.cam video, .cam img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cam video[hidden], .cam img[hidden] { display: none; }
+.cam video.mirror { transform: scaleX(-1); }
+.cam img { object-fit: contain; }   /* show the whole saved photo, watermark included */
+.cam-top {
+  position: absolute; top: max(14px, env(safe-area-inset-top)); left: 14px; right: 14px;
+  display: flex; align-items: center; gap: 12px; z-index: 1;
+}
+.cam-privacy {
+  font-size: 12px; font-weight: 500; padding: 7px 12px; border-radius: 999px;
+  background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+.cam-round {
+  flex: none; width: 46px; height: 46px; border-radius: 50%; font-size: 20px;
+  display: grid; place-items: center;
+  background: rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.22); box-shadow: var(--glass-shine);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+.cam-msg {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: min(340px, calc(100% - 40px)); text-align: center; line-height: 1.5; color: var(--muted);
+}
+.cam-msg[hidden] { display: none; }
+.cam-bottom {
+  position: absolute; left: 0; right: 0; bottom: max(30px, env(safe-area-inset-bottom));
+  display: flex; align-items: center; justify-content: space-evenly; gap: 12px; padding: 0 20px;
+}
+.cam-bottom[hidden] { display: none; }
+.cam-spacer { width: 46px; }
+.cam-shutter {
+  width: 76px; height: 76px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 0 4px rgba(0,0,0,.4), 0 0 0 8px #fff; transition: transform .1s;
+}
+.cam-shutter:active { transform: scale(.9); }
 .lock-act.left { left: max(36px, 8vw); }
 .lock-act.right { right: max(36px, 8vw); }
 @keyframes nudge { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }

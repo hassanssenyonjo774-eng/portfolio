@@ -97,7 +97,7 @@
   }
 
   let startY = null;
-  lock.addEventListener("pointerdown", (e) => { startY = e.clientY; });
+  lock.addEventListener("pointerdown", (e) => { startY = e.target.closest(".lock-act") ? null : e.clientY; });
   lock.addEventListener("pointermove", (e) => {
     if (startY === null) return;
     const dy = Math.min(0, e.clientY - startY);
@@ -115,8 +115,146 @@
   });
   lock.addEventListener("wheel", (e) => { if (e.deltaY > 20) unlock(); });
   document.addEventListener("keydown", (e) => {
-    if (!unlocked && ["Enter", " ", "ArrowUp"].includes(e.key)) unlock();
+    if (!unlocked && !e.target.closest("button, .cam") && ["Enter", " ", "ArrowUp"].includes(e.key)) unlock();
   });
+
+  // ---------- Torch ----------
+  // Websites can only switch on the real flashlight in Chrome on Android.
+  // Everywhere else the screen itself lights up white.
+  const torchBtn = $("#torchBtn");
+  const screenTorch = $("#screenTorch");
+  let torchTrack = null;
+
+  function setTorchUI(on) {
+    torchBtn.classList.toggle("on", on);
+    torchBtn.setAttribute("aria-pressed", on);
+  }
+
+  async function torchOn() {
+    if (/Android/i.test(navigator.userAgent) && navigator.mediaDevices?.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        const track = stream.getVideoTracks()[0];
+        if (track.getCapabilities?.().torch) {
+          await track.applyConstraints({ advanced: [{ torch: true }] });
+          torchTrack = track;
+          setTorchUI(true);
+          return;
+        }
+        track.stop();
+      } catch { /* no permission or no torch — fall back to the screen */ }
+    }
+    screenTorch.hidden = false;
+    setTorchUI(true);
+  }
+
+  function torchOff() {
+    if (torchTrack) { torchTrack.stop(); torchTrack = null; }
+    screenTorch.hidden = true;
+    setTorchUI(false);
+  }
+
+  torchBtn.addEventListener("click", () => (torchBtn.classList.contains("on") ? torchOff() : torchOn()));
+  screenTorch.addEventListener("click", torchOff);
+
+  // ---------- Camera ----------
+  // Everything happens inside the visitor's browser; the photo is never uploaded.
+  const cam = $("#cam");
+  const camVideo = $("#camVideo");
+  const camShot = $("#camShot");
+  const camMsg = $("#camMsg");
+  let camStream = null;
+  let facing = "user";
+  let shotBlob = null;
+
+  function camShow(msg) {
+    camMsg.textContent = msg;
+    camMsg.hidden = !msg;
+  }
+
+  async function camStart() {
+    camStop();
+    camShow("");
+    try {
+      camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing }, audio: false });
+      camVideo.srcObject = camStream;
+      camVideo.classList.toggle("mirror", facing === "user");
+    } catch (err) {
+      camShow(err && err.name === "NotAllowedError"
+        ? "Camera permission was blocked. Allow camera access in your browser settings and try again."
+        : "No camera was found on this device.");
+    }
+  }
+
+  function camStop() {
+    if (camStream) camStream.getTracks().forEach((t) => t.stop());
+    camStream = null;
+  }
+
+  function camReview(show) {
+    $("#camLive").hidden = show;
+    $("#camReview").hidden = !show;
+    camShot.hidden = !show;
+    camVideo.hidden = show;
+  }
+
+  function camOpen() {
+    if (torchBtn.classList.contains("on")) torchOff();
+    cam.hidden = false;
+    camReview(false);
+    if (!navigator.mediaDevices?.getUserMedia) { camShow("This browser can't open the camera."); return; }
+    camStart();
+  }
+
+  function camClose() {
+    camStop();
+    cam.hidden = true;
+    if (camShot.src) URL.revokeObjectURL(camShot.src);
+    shotBlob = null;
+  }
+
+  function takePhoto() {
+    if (!camStream || !camVideo.videoWidth) return;
+    const w = camVideo.videoWidth, h = camVideo.videoHeight;
+    const canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    if (facing === "user") { ctx.translate(w, 0); ctx.scale(-1, 1); } // save selfies the way they looked
+    ctx.drawImage(camVideo, 0, 0, w, h);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    // Small watermark with the site address
+    const size = Math.max(14, Math.round(w / 40));
+    ctx.font = `600 ${size}px Inter, sans-serif`;
+    ctx.textAlign = "right";
+    ctx.fillStyle = "rgba(255,255,255,.85)";
+    ctx.shadowColor = "rgba(0,0,0,.5)"; ctx.shadowBlur = size / 2;
+    ctx.fillText(location.hostname.replace(/^www\./, "") || "iamhassan.online", w - size, h - size);
+    canvas.toBlob((blob) => {
+      shotBlob = blob;
+      camShot.src = URL.createObjectURL(blob);
+      const file = new File([blob], "selfie.jpg", { type: "image/jpeg" });
+      $("#camShare").hidden = !(navigator.canShare && navigator.canShare({ files: [file] }));
+      camReview(true);
+    }, "image/jpeg", 0.92);
+  }
+
+  $("#cameraBtn").addEventListener("click", camOpen);
+  $("#camClose").addEventListener("click", camClose);
+  $("#camShutter").addEventListener("click", takePhoto);
+  $("#camFlip").addEventListener("click", () => { facing = facing === "user" ? "environment" : "user"; camStart(); });
+  $("#camRetake").addEventListener("click", () => camReview(false));
+  $("#camSave").addEventListener("click", () => {
+    if (!shotBlob) return;
+    const a = document.createElement("a");
+    a.href = camShot.src;
+    a.download = "selfie-" + Date.now() + ".jpg";
+    a.click();
+  });
+  $("#camShare").addEventListener("click", () => {
+    if (!shotBlob) return;
+    navigator.share({ files: [new File([shotBlob], "selfie.jpg", { type: "image/jpeg" })] }).catch(() => {});
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !cam.hidden) camClose(); });
 
   // ---------- Icons ----------
   const ICONS = {
