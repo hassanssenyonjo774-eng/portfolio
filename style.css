@@ -1,12 +1,16 @@
+/* Look: iOS "Liquid Glass" — translucent, blurred, rounded, with a light edge highlight */
 :root {
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Inter, Roboto, sans-serif;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, "Segoe UI", Roboto, sans-serif;
   --mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
-  --glass: rgba(30, 30, 34, 0.55);
-  --glass-light: rgba(255, 255, 255, 0.18);
-  --window: rgba(28, 28, 32, 0.92);
   --text: #f5f5f7;
-  --muted: #a1a1aa;
-  --accent: #f08a24;
+  --muted: rgba(235, 235, 245, .62);
+  --accent: #ff9f0a;                                  /* iOS system orange */
+
+  --glass: rgba(255, 255, 255, .14);                  /* light glass: dock, notifications */
+  --glass-dark: rgba(28, 28, 32, .52);                /* dark glass: windows, readable text */
+  --glass-edge: rgba(255, 255, 255, .26);
+  --glass-blur: blur(30px) saturate(180%);
+  --glass-shine: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -1px 0 rgba(255,255,255,.08), inset 0 0 0 .5px rgba(255,255,255,.1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,28 +43,42 @@ a { color: var(--accent); }
   background: linear-gradient(to bottom, rgba(0,0,0,.35), transparent 35%, transparent 65%, rgba(0,0,0,.55));
 }
 .lock > *:not(.lock-bg) { position: relative; z-index: 1; }
-.lock-top { margin-top: 7vh; text-align: center; }
-.lock-date { font-size: clamp(16px, 2vw, 20px); font-weight: 500; opacity: .9; }
+.lock-top { margin-top: 6vh; text-align: center; }
+.lock-date { font-size: clamp(17px, 2.1vw, 22px); font-weight: 600; opacity: .92; letter-spacing: .01em; }
 .lock-time {
-  font-size: clamp(72px, 13vw, 140px); font-weight: 700; line-height: 1;
-  letter-spacing: -2px; text-shadow: 0 4px 30px rgba(0,0,0,.3);
+  font-size: clamp(96px, 17vw, 190px); font-weight: 600; line-height: .95;
+  letter-spacing: -.035em; font-variant-numeric: tabular-nums;
+  color: rgba(255,255,255,.92); text-shadow: 0 6px 40px rgba(0,0,0,.25);
 }
 .lock-note {
-  margin-top: 4vh; width: min(380px, calc(100% - 32px));
-  padding: 12px 14px; border-radius: 18px;
-  background: rgba(255,255,255,.2); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  margin-top: 4vh; width: min(390px, calc(100% - 32px));
+  padding: 14px 16px; border-radius: 26px;
+  background: var(--glass); border: 1px solid var(--glass-edge); box-shadow: var(--glass-shine), 0 10px 40px rgba(0,0,0,.25);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   cursor: pointer; animation: drop .7s .3s both cubic-bezier(.2, .9, .3, 1.2);
+  transition: transform .2s;
 }
+.lock-note:hover { transform: scale(1.02); }
 @keyframes drop { from { opacity: 0; transform: translateY(-16px) scale(.96); } }
-.lock-note-head { display: flex; justify-content: space-between; font-size: 12px; opacity: .8; margin-bottom: 4px; text-transform: lowercase; }
+.lock-note-head { display: flex; justify-content: space-between; font-size: 13px; opacity: .75; margin-bottom: 4px; text-transform: lowercase; }
 .lock-note-title { font-weight: 600; font-size: 15px; }
-.lock-note-text { font-size: 14px; opacity: .9; }
+.lock-note-text { font-size: 14px; opacity: .88; line-height: 1.35; }
 .lock-hint {
-  margin-top: auto; margin-bottom: max(28px, env(safe-area-inset-bottom));
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  margin-top: auto; margin-bottom: max(14px, env(safe-area-inset-bottom));
+  display: flex; flex-direction: column-reverse; align-items: center; gap: 10px;
   font-size: 13px; opacity: .85;
 }
-.lock-bar { width: 130px; height: 5px; border-radius: 3px; background: #fff; animation: nudge 2s infinite; }
+.lock-bar { width: 140px; height: 5px; border-radius: 3px; background: #fff; animation: nudge 2s infinite; }
+/* Flashlight & camera buttons, like the iPhone lock screen */
+.lock-act {
+  position: absolute !important; bottom: max(44px, calc(env(safe-area-inset-bottom) + 30px));
+  width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--glass); border: 1px solid var(--glass-edge); box-shadow: var(--glass-shine);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+}
+.lock-act svg { width: 22px; height: 22px; }
+.lock-act.left { left: max(36px, 8vw); }
+.lock-act.right { right: max(36px, 8vw); }
 @keyframes nudge { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
 
 /* ---------------- Desktop ---------------- */
@@ -70,10 +88,12 @@ a { color: var(--accent); }
 .desktop.on .wallpaper { transform: scale(1); }
 
 .menubar {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 50; height: 28px;
+  position: absolute; top: 0; left: 0; right: 0; z-index: 50; height: 30px;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 0 14px; font-size: 13px;
-  background: rgba(20, 20, 24, .35); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  padding: 0 16px; font-size: 13px; font-weight: 500;
+  background: rgba(255, 255, 255, .08); border-bottom: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  text-shadow: 0 1px 6px rgba(0,0,0,.25);
 }
 .menu-left, .menu-right { display: flex; align-items: center; gap: 18px; }
 .menu-logo { font-size: 15px; }
@@ -95,33 +115,43 @@ a { color: var(--accent); }
 
 /* ---------------- Dock ---------------- */
 .dock {
-  position: absolute; left: 50%; bottom: 10px; z-index: 60;
+  position: absolute; left: 50%; bottom: 12px; z-index: 60;
   transform: translateX(-50%);
-  display: flex; align-items: flex-end; gap: 6px;
-  padding: 6px 8px; border-radius: 20px;
-  background: var(--glass-light); border: 1px solid rgba(255,255,255,.18);
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 9px 11px; border-radius: 34px;
+  background: var(--glass); border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shine), 0 18px 50px rgba(0,0,0,.35);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   max-width: calc(100% - 16px);
 }
 .dock-item { position: relative; display: flex; flex-direction: column; align-items: center; }
 .dock-icon {
-  width: 52px; height: 52px; border-radius: 13px;
+  position: relative; overflow: hidden;
+  width: 54px; height: 54px; border-radius: 15px;   /* iOS squircle-ish corner */
   display: grid; place-items: center;
-  transition: width .15s, height .15s, margin .15s;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+  transition: width .2s cubic-bezier(.2,.9,.3,1.2), height .2s cubic-bezier(.2,.9,.3,1.2), margin .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
 }
-.dock-icon svg { width: 58%; height: 58%; }
-.dock-item.mag2 .dock-icon { width: 72px; height: 72px; margin-top: -20px; }
-.dock-item.mag1 .dock-icon { width: 62px; height: 62px; margin-top: -10px; }
+/* Glassy shine on every app icon */
+.dock-icon::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(160deg, rgba(255,255,255,.38), rgba(255,255,255,0) 42%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 0 0 .5px rgba(255,255,255,.25);
+}
+.dock-icon svg { width: 58%; height: 58%; position: relative; }
+.dock-item.mag2 .dock-icon { width: 74px; height: 74px; border-radius: 20px; margin-top: -20px; }
+.dock-item.mag1 .dock-icon { width: 64px; height: 64px; border-radius: 17px; margin-top: -10px; }
 .dock-label {
-  position: absolute; bottom: calc(100% + 14px); white-space: nowrap;
-  padding: 4px 10px; border-radius: 6px; font-size: 12px;
-  background: rgba(30,30,34,.85); opacity: 0; pointer-events: none; transition: opacity .15s;
+  position: absolute; bottom: calc(100% + 16px); white-space: nowrap;
+  padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 500;
+  background: rgba(40,40,46,.6); border: 1px solid var(--glass-edge); box-shadow: var(--glass-shine);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  opacity: 0; pointer-events: none; transition: opacity .15s;
 }
 .dock-item:hover .dock-label { opacity: 1; }
 .dock-dot { width: 4px; height: 4px; border-radius: 50%; background: #fff; margin-top: 3px; opacity: 0; }
 .dock-item.running .dock-dot { opacity: .8; }
-.dock-sep { width: 1px; align-self: stretch; margin: 4px 4px 10px; background: rgba(255,255,255,.3); }
+.dock-sep { width: 1px; align-self: stretch; margin: 6px 3px 12px; background: rgba(255,255,255,.28); }
 
 .ic-notes { background: linear-gradient(#fde047 0 26%, #fefce8 26%); color: #a16207; }
 .ic-photos { background: #fff; }
@@ -136,73 +166,79 @@ a { color: var(--accent); }
 /* ---------------- Windows ---------------- */
 .win {
   position: absolute; z-index: 10;
-  width: min(620px, calc(100vw - 24px)); height: min(460px, calc(100vh - 140px));
+  width: min(640px, calc(100vw - 24px)); height: min(480px, calc(100vh - 150px));
   display: flex; flex-direction: column;
-  background: var(--window); border: 1px solid rgba(255,255,255,.12);
-  border-radius: 12px; overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0,0,0,.5);
-  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-  animation: pop .25s cubic-bezier(.2, .9, .3, 1.15);
+  background: var(--glass-dark); border: 1px solid rgba(255,255,255,.18);
+  border-radius: 28px; overflow: hidden;
+  box-shadow: var(--glass-shine), 0 30px 80px rgba(0,0,0,.45);
+  backdrop-filter: blur(44px) saturate(190%); -webkit-backdrop-filter: blur(44px) saturate(190%);
+  animation: pop .35s cubic-bezier(.2, .9, .3, 1.2);
   user-select: text;
 }
-@keyframes pop { from { opacity: 0; transform: scale(.92); } }
+@keyframes pop { from { opacity: 0; transform: scale(.9) translateY(10px); } }
 .win.maxed { left: 8px !important; top: 36px !important; width: calc(100vw - 16px); height: calc(100vh - 130px); }
 .win.closing { animation: shut .18s forwards; }
 @keyframes shut { to { opacity: 0; transform: scale(.92); } }
 .win-bar {
-  flex: none; height: 38px; display: flex; align-items: center; gap: 8px;
-  padding: 0 12px; cursor: grab; user-select: none; touch-action: none;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  flex: none; height: 48px; display: flex; align-items: center; gap: 8px;
+  padding: 0 18px; cursor: grab; user-select: none; touch-action: none;
 }
 .win-bar:active { cursor: grabbing; }
-.win-btn { width: 12px; height: 12px; border-radius: 50%; }
+.win-btn { width: 13px; height: 13px; border-radius: 50%; box-shadow: inset 0 1px 0 rgba(255,255,255,.35); }
 .win-btn.close { background: #ff5f57; }
 .win-btn.min { background: #febc2e; }
 .win-btn.max { background: #28c840; }
-.win-title { flex: 1; text-align: center; font-size: 13px; font-weight: 600; color: var(--muted); margin-right: 52px; }
-.win-body { flex: 1; overflow: auto; padding: 22px 26px; }
+.win-title { flex: 1; text-align: center; font-size: 13px; font-weight: 600; color: var(--muted); margin-right: 55px; }
+.win-body { flex: 1; overflow: auto; padding: 8px 28px 26px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
 
 /* About */
-.about h1 { font-size: 26px; margin-bottom: 4px; }
+.about h1 { font-size: 28px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 4px; }
 .about .tag { color: var(--accent); font-weight: 600; font-size: 14px; margin-bottom: 18px; }
-.about p { line-height: 1.65; color: #d4d4d8; margin-bottom: 14px; font-size: 15px; }
+.about p { line-height: 1.65; color: rgba(235,235,245,.85); margin-bottom: 14px; font-size: 15px; }
 .about strong { color: #fff; }
 .about .credit { font-size: 12px; color: var(--muted); margin-top: 24px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.08); }
 .about-head {display: flex; gap: 16px; align-items: center; margin-bottom: 18px; }
-.about-head img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: center 20%; flex: none; }
+.about-head img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; object-position: center 20%; flex: none; border: 2px solid rgba(255,255,255,.3); box-shadow: 0 6px 20px rgba(0,0,0,.3); }
 
 /* Photos */
 .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
-.photos img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 25%;border-radius: 8px; cursor: zoom-in; transition: transform .2s; }
+.photos img { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: center 25%; border-radius: 16px; cursor: zoom-in; transition: transform .2s; }
 .photos img:hover { transform: scale(1.03); }
-.viewer { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.9); display: grid; place-items: center; cursor: zoom-out; }
-.viewer img { max-width: 92vw; max-height: 88vh; border-radius: 8px; }
+.viewer { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.55); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); display: grid; place-items: center; cursor: zoom-out; animation: fade .2s; }
+@keyframes fade { from { opacity: 0; } }
+.viewer img { max-width: 92vw; max-height: 88vh; border-radius: 22px; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
 
 /* Projects */
 .empty { text-align: center; padding: 40px 10px; color: var(--muted); line-height: 1.6; }
 .empty .big { font-size: 42px; margin-bottom: 8px; }
-.project { display: block; padding: 14px 16px; border-radius: 10px; background: rgba(255,255,255,.06); margin-bottom: 10px; text-decoration: none; color: var(--text); }
+.project { display: block; padding: 16px 18px; border-radius: 20px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); margin-bottom: 10px; text-decoration: none; color: var(--text); }
 .project:hover { background: rgba(255,255,255,.1); }
 .project p { color: var(--muted); font-size: 14px; margin-top: 4px; }
 
 /* Buttons */
-.btn { padding: 9px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; background: rgba(255,255,255,.1); transition: background .15s, transform .1s; }
-.btn:hover { background: rgba(255,255,255,.16); }
-.btn:active { transform: scale(.97); }
-.btn.primary { background: var(--accent); color: #111; }
-.btn.primary:hover { background: #f59e42; }
+/* iOS-style capsule buttons */
+.btn {
+  padding: 11px 20px; border-radius: 999px; font-size: 15px; font-weight: 600;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); box-shadow: var(--glass-shine);
+  transition: background .15s, transform .12s;
+}
+.btn:hover { background: rgba(255,255,255,.18); }
+.btn:active { transform: scale(.96); }
+.btn.primary { background: var(--accent); border-color: rgba(255,255,255,.3); color: #1a1100; }
+.btn.primary:hover { background: #ffb340; }
 .msg-row { display: flex; gap: 10px; flex-wrap: wrap; }
 
 /* Leave a note */
-.msg h2 { font-size: 22px; margin-bottom: 6px; }
+.msg h2 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
 .msg .sub { color: var(--muted); font-size: 14px; line-height: 1.5; margin-bottom: 18px; }
 .msg input, .msg textarea {
-  display: block; width: 100%; margin-bottom: 12px; padding: 11px 13px;
+  display: block; width: 100%; margin-bottom: 12px; padding: 13px 16px;
   font: inherit; font-size: 15px; color: var(--text);
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 9px;
-  outline: none; resize: vertical;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); border-radius: 16px;
+  outline: none; resize: vertical; transition: border-color .15s, background .15s;
 }
-.msg input:focus, .msg textarea:focus { border-color: var(--accent); }
+.msg input::placeholder, .msg textarea::placeholder { color: rgba(235,235,245,.45); }
+.msg input:focus, .msg textarea:focus { border-color: var(--accent); background: rgba(255,255,255,.11); }
 .msg-status { margin-top: 12px; font-size: 14px; color: #86efac; min-height: 1.4em; }
 
 /* Encouragement */
@@ -212,11 +248,11 @@ a { color: var(--accent); }
 .boost-quote.in { animation: rise .5s ease both; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
 .boost-from { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
-.encourage-win .win-body { background: radial-gradient(circle at 50% 0%, rgba(240,138,36,.18), transparent 60%); }
+.encourage-win .win-body { background: radial-gradient(circle at 50% 0%, rgba(255,159,10,.2), transparent 60%); }
 
 /* Terminal */
-.term { font-family: var(--mono); font-size: 13.5px; line-height: 1.6; color: #e4e4e7; background: #0c0c0e; }
-.term .win-body { padding: 14px 16px; }
+.term { font-family: var(--mono); font-size: 13.5px; line-height: 1.6; color: #e4e4e7; background: rgba(8, 8, 10, .78); }
+.term .win-body { padding: 6px 20px 16px; }
 .term .p { color: #4ade80; }
 .term .out { white-space: pre-wrap; color: #d4d4d8; }
 .term-line { display: flex; gap: 8px; }
@@ -225,10 +261,19 @@ a { color: var(--accent); }
 /* ---------------- Phones ---------------- */
 @media (max-width: 640px) {
   .menu-hide, .music-title { display: none; }
-  .win { left: 8px !important; right: 8px; top: 36px !important; width: auto; height: calc(100dvh - 130px); }
-  .win-body { padding: 18px; }
-  .dock { gap: 4px; padding: 5px 6px; }
-  .dock-icon { width: 44px; height: 44px; border-radius: 11px; }
-  .dock-item.mag1 .dock-icon, .dock-item.mag2 .dock-icon { width: 44px; height: 44px; margin-top: 0; }
+  .win { left: 8px !important; right: 8px; top: 38px !important; width: auto; height: calc(100dvh - 140px); border-radius: 26px; }
+  .win-body { padding: 6px 18px 18px; }
+  /* Dock stretches edge to edge and icons shrink to fit, so all of them fit on any phone */
+  .dock {
+    left: 8px; right: 8px; transform: none; max-width: none;
+    justify-content: space-between; gap: 4px; padding: 7px; border-radius: 26px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+  .dock-sep { display: none; }
+  .dock-item { flex: 1 1 0; min-width: 0; }
+  .dock-icon, .dock-item.mag1 .dock-icon, .dock-item.mag2 .dock-icon {
+    width: 100%; max-width: 46px; height: auto; aspect-ratio: 1; border-radius: 28%; margin-top: 0;
+  }
+  .lock-act { width: 48px; height: 48px; }
   .dock-label { display: none; }
 }
