@@ -38,7 +38,7 @@
   let unlocked = false;
 
   // ---------- Music ----------
-  // Browsers only allow sound after a click/tap/key, so it starts on unlock.
+  // Never plays by itself: the menu bar shows "Play music" and visitors choose.
   const M = S.music || {};
   const musicBtn = $("#musicBtn");
   let audio = null;
@@ -60,36 +60,34 @@
   function setMusicUI(playing) {
     musicBtn.classList.toggle("paused", !playing);
     musicBtn.setAttribute("aria-label", playing ? "Pause music" : "Play music");
+    $("#musicTitle").textContent = playing ? (M.title || "Pause") : "Play music";
   }
 
   function playMusic() {
     audio.volume = 0;
-    audio.play().then(() => { fadeTo(M.volume ?? 0.35, 2500); setMusicUI(true); })
-      .catch(() => {
-        // Blocked (e.g. unlocked by scrolling) — start on the next click instead
-        setMusicUI(false);
-        document.addEventListener("pointerdown", (e) => { if (!e.target.closest("#musicBtn")) playMusic(); }, { once: true });
-      });
+    audio.play().then(() => { fadeTo(M.volume ?? 0.25, 2000); setMusicUI(true); })
+      .catch(() => setMusicUI(false));
   }
 
-  function startMusic() {
+  function pauseMusic() {
+    if (audio && !audio.paused) { fadeTo(0, 600); setMusicUI(false); }
+  }
+
+  function setupMusic() {
     if (!M.src) return;
     audio = new Audio(M.src);
     audio.loop = true;
-    $("#musicTitle").textContent = M.title || "";
-    musicBtn.title = M.credit || (M.title ? "Now playing: " + M.title : "Music");
+    audio.preload = "none"; // don't download the song until someone asks for it
+    musicBtn.title = M.credit || "Music";
     musicBtn.hidden = false;
-    musicBtn.onclick = () => {
-      if (audio.paused || musicBtn.classList.contains("paused")) playMusic();
-      else { fadeTo(0, 600); setMusicUI(false); }
-    };
-    playMusic();
+    setMusicUI(false);
+    musicBtn.onclick = () => (musicBtn.classList.contains("paused") ? playMusic() : pauseMusic());
   }
+  setupMusic();
 
   function unlock(firstApp = "about") {
     if (unlocked) return;
     unlocked = true;
-    startMusic();
     lock.classList.add("unlocked");
     desktop.classList.add("on");
     desktop.setAttribute("aria-hidden", "false");
@@ -97,7 +95,7 @@
   }
 
   let startY = null;
-  lock.addEventListener("pointerdown", (e) => { startY = e.target.closest(".lock-act") ? null : e.clientY; });
+  lock.addEventListener("pointerdown", (e) => { startY = e.target.closest(".lock-act, .hire-btn") ? null : e.clientY; });
   lock.addEventListener("pointermove", (e) => {
     if (startY === null) return;
     const dy = Math.min(0, e.clientY - startY);
@@ -115,7 +113,7 @@
   });
   lock.addEventListener("wheel", (e) => { if (e.deltaY > 20) unlock(); });
   document.addEventListener("keydown", (e) => {
-    if (!unlocked && !e.target.closest("button, .cam") && ["Enter", " ", "ArrowUp"].includes(e.key)) unlock();
+    if (!unlocked && !e.target.closest("button, a, .cam, .cv") && $("#cv").hidden && ["Enter", " ", "ArrowUp"].includes(e.key)) unlock();
   });
 
   // ---------- Torch ----------
@@ -267,6 +265,8 @@
     sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>`,
     instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`,
     x: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8L17.8 3Zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5Z"/></svg>`,
+    linkedin: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4V21H3V9.75Zm6.5 0h3.8v1.6h.06c.53-1 1.84-2.05 3.78-2.05 4.04 0 4.79 2.6 4.79 6V21h-4v-5.07c0-1.21-.02-2.77-1.69-2.77-1.69 0-1.95 1.32-1.95 2.68V21h-4V9.75Z"/></svg>`,
+    resume: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 12.5h18"/></svg>`,
     github: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>`
   };
 
@@ -281,8 +281,10 @@
             <div><h1>${esc(S.headline)}</h1><div class="tag">${esc(S.tagline)}</div></div>
           </div>
           ${S.bio.map((p) => `<p>${rich(p)}</p>`).join("")}
+          <div class="msg-row"><button class="btn primary" data-cv>👔 View my résumé</button></div>
           ${S.music && S.music.credit ? `<p class="credit">${esc(S.music.credit)}</p>` : ""}
-        </div>`
+        </div>`,
+      mount: (body) => { body.querySelector("[data-cv]").onclick = openCV; }
     },
     photos: {
       label: "Photos", icon: "photos", title: "Photos",
@@ -298,7 +300,7 @@
     projects: {
       label: "Projects", icon: "projects", title: "Projects",
       render: () => S.projects.length
-        ? S.projects.map((p) => `<a class="project" href="${esc(p.url || "#")}" target="_blank" rel="noopener"><strong>${esc(p.title)}</strong><p>${esc(p.description || "")}</p></a>`).join("")
+        ? S.projects.map(projectCard).join("")
         : `<div class="empty"><div class="big">🚧</div>Projects are being built right now.<br>Follow along on <a href="${esc(S.socials.github)}" target="_blank" rel="noopener">GitHub</a>.</div>`
     },
     notes: {
@@ -384,10 +386,11 @@
         const input = body.querySelector("input");
         const log = body.querySelector("#termLog");
         const cmds = {
-          help: "whoami · about · skills · socials · goals · clear",
+          help: "whoami · about · skills · contact · socials · goals · clear",
           whoami: `${S.name} — ${S.tagline}`,
           about: S.bio[0],
-          skills: "HTML · CSS · JavaScript · AI tools · learning by building",
+          skills: (S.skills || []).map((s) => "• " + s).join("\n"),
+          contact: S.contact ? `email: ${S.contact.email}\nphone: ${S.contact.phoneDisplay || S.contact.phone}\nlinkedin: ${S.contact.linkedin}` : "",
           goals: "Build full-stack apps and AI-driven systems that solve real problems.",
           socials: Object.entries(S.socials).map(([k, v]) => `${k}: ${v}`).join("\n")
         };
@@ -407,10 +410,89 @@
   };
 
   const LINKS = {
+    linkedin: { label: "LinkedIn" },
+    github: { label: "GitHub" },
     instagram: { label: "Instagram" },
-    x: { label: "X" },
-    github: { label: "GitHub" }
+    x: { label: "X" }
   };
+
+  function projectCard(p) {
+    return `
+      <div class="project">
+        <strong>${esc(p.title)}</strong>
+        <p>${esc(p.description || "")}</p>
+        ${p.tags ? `<div class="tags">${p.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
+        <div class="msg-row">
+          ${p.url ? `<a class="btn primary" href="${esc(p.url)}" target="_blank" rel="noopener">View live</a>` : ""}
+          ${p.code ? `<a class="btn" href="${esc(p.code)}" target="_blank" rel="noopener">View code</a>` : ""}
+        </div>
+      </div>`;
+  }
+
+  // ---------- Recruiter mode (résumé) ----------
+  // A calm, one-page view for employers: no music, no effects, everything that matters.
+  const cv = $("#cv");
+  const plain = (s) => String(s).replace(/\*\*/g, "");
+
+  function renderCV() {
+    const C = S.contact || {};
+    const wa = C.phone ? "https://wa.me/" + C.phone.replace(/\D/g, "") : "";
+    cv.innerHTML = `
+      <div class="cv-card">
+        <div class="cv-bar no-print">
+          <button class="btn" data-cv-close>← Back</button>
+          <div class="msg-row">
+            <button class="btn" data-cv-print>Save as PDF</button>
+            <button class="btn primary" data-cv-explore>Explore my interactive site →</button>
+          </div>
+        </div>
+        <header class="cv-head">
+          <img src="${esc(S.avatar || S.lockscreen)}" alt="${esc(S.name)}">
+          <div>
+            <h1>${esc(S.name)}</h1>
+            <p class="cv-role">${esc(S.tagline)}</p>
+          </div>
+        </header>
+        <div class="cv-contacts">
+          ${C.email ? `<a href="mailto:${esc(C.email)}">✉️ ${esc(C.email)}</a>` : ""}
+          ${C.phone ? `<a href="tel:${esc(C.phone)}">📞 ${esc(C.phoneDisplay || C.phone)}</a>` : ""}
+          ${wa ? `<a href="${esc(wa)}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ""}
+          ${C.linkedin ? `<a href="${esc(C.linkedin)}" target="_blank" rel="noopener">${ICONS.linkedin} LinkedIn</a>` : ""}
+          ${S.socials.github ? `<a href="${esc(S.socials.github)}" target="_blank" rel="noopener">${ICONS.github} GitHub</a>` : ""}
+          ${S.cv ? `<a href="${esc(S.cv)}" download>📄 Download CV</a>` : ""}
+        </div>
+        <section>
+          <h2>Summary</h2>
+          ${S.bio.filter((p) => !/^\*\*.*\*\*$/.test(p)).map((p) => `<p>${esc(plain(p))}</p>`).join("")}
+        </section>
+        ${S.skills ? `<section><h2>Skills</h2><div class="tags big">${S.skills.map((s) => `<span>${esc(s)}</span>`).join("")}</div></section>` : ""}
+        ${S.projects.length ? `<section><h2>Projects</h2>${S.projects.map(projectCard).join("")}</section>` : ""}
+        <p class="cv-foot">${esc(location.hostname.replace(/^www\./, "") || "iamhassan.online")}</p>
+      </div>`;
+    cv.querySelector("[data-cv-close]").onclick = closeCV;
+    cv.querySelector("[data-cv-print]").onclick = () => window.print();
+    cv.querySelector("[data-cv-explore]").onclick = () => { closeCV(); unlock(); };
+  }
+
+  function openCV() {
+    pauseMusic();
+    if (torchBtn.classList.contains("on")) torchOff();
+    renderCV();
+    cv.hidden = false;
+    cv.scrollTop = 0;
+    // Ignore taps for a moment so a double-tap on the button can't hit a link underneath
+    cv.style.pointerEvents = "none";
+    setTimeout(() => (cv.style.pointerEvents = ""), 450);
+    document.body.classList.add("cv-open");
+  }
+
+  function closeCV() {
+    cv.hidden = true;
+    document.body.classList.remove("cv-open");
+  }
+
+  $("#hireBtn").addEventListener("click", openCV);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !cv.hidden) closeCV(); });
 
   // ---------- Windows ----------
   const open = {};
@@ -481,7 +563,7 @@
 
   function dockItem(key, label, iconKey, onClick, href) {
     const el = document.createElement(href ? "a" : "button");
-    el.className = "dock-item";
+    el.className = "dock-item" + (href ? " dock-link" : "");
     el.dataset.app = key;
     if (href) { el.href = href; el.target = "_blank"; el.rel = "noopener"; }
     else el.onclick = onClick;
@@ -490,7 +572,10 @@
     dock.appendChild(el);
   }
 
-  Object.entries(APPS).forEach(([id, app]) => dockItem(id, app.label, app.icon, () => openApp(id)));
+  Object.entries(APPS).forEach(([id, app]) => {
+    dockItem(id, app.label, app.icon, () => openApp(id));
+    if (id === "about") dockItem("resume", "Résumé", "resume", openCV); // right after About Me
+  });
   const sep = document.createElement("span");
   sep.className = "dock-sep";
   dock.appendChild(sep);

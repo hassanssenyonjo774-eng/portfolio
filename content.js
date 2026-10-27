@@ -9,17 +9,35 @@ window.SITE = {
   menuName: "hassan",            // small name in the top-left menu bar
 
   headline: "Hi, I'm Hassan Ssenyonjo.",
-  tagline: "Aspiring Web Developer | AI Enthusiast | Future Tech Entrepreneur",
+  tagline: "AI-Assisted Web Developer",
 
   bio: [
-    "I'm an aspiring web developer and technology enthusiast passionate about using artificial intelligence and modern web technologies to turn ideas into practical solutions.",
-    "My journey into technology is driven by curiosity, continuous learning, and the ambition to build products that solve real-world problems. I'm exploring AI-powered development tools, frontend development, and the broader world of software engineering, with a long-term goal of developing full-stack applications and intelligent AI-driven systems.",
-    "I believe technology should do more than look impressive — it should solve meaningful problems, improve people's lives, and create opportunities. I'm particularly interested in how AI agents and automation can help businesses become more efficient, simplify everyday tasks, and unlock new possibilities for entrepreneurs.",
-    "My approach is simple: **learn by building, improve through experimentation, and turn knowledge into action.** I'm committed to developing my technical skills, working on practical projects, and growing into a developer capable of taking an idea from concept to a working product.",
-    "Beyond technology, I'm interested in entrepreneurship, personal development, and exploring innovative ways to create value in an increasingly digital world.",
-    "I'm at the beginning of my journey, but my vision is clear: to become a skilled technology professional, build impactful digital products, and eventually create solutions that make a difference beyond borders.",
-    "**I'm not just learning how technology works. I'm learning how to use it to build the future.**"
+    "I'm an AI-assisted web developer. I use modern AI coding tools such as Claude Code to plan, build, debug and ship real websites — quickly and to a high standard.",
+    "I designed and launched this site end to end: an interactive, Mac-style portfolio with a music player, selfie camera and custom domain, deployed through GitHub and Vercel.",
+    "I focus on clean, responsive interfaces and on turning ideas into working products, and I'm growing toward full-stack apps and AI-powered automation for businesses.",
+    "**Learn by building. Ship, then improve.**"
   ],
+
+  // Skills — shown in the résumé and the Terminal
+  skills: [
+    "AI-assisted development (Claude Code, prompt engineering)",
+    "HTML, CSS & JavaScript",
+    "Responsive, mobile-first UI design",
+    "Git, GitHub & Vercel deployment",
+    "Custom domains, DNS & HTTPS",
+    "Browser APIs (camera, audio, clipboard)"
+  ],
+
+  // Contact — shown in the résumé (Recruiter mode)
+  contact: {
+    email: "hassanssenyonjo774@gmail.com",
+    phone: "+971524907113",
+    phoneDisplay: "+971 52 490 7113",
+    linkedin: "https://www.linkedin.com/in/hassan-ssenyonjo-225558442"
+  },
+
+  // Optional: put your CV PDF next to index.html and write its name here, e.g. "Hassan-Ssenyonjo-CV.pdf"
+  cv: "",
 
   // Profile picture in the About Me window
   avatar: "photo-3.jpg",
@@ -35,7 +53,7 @@ window.SITE = {
   // Optional: add your email in quotes to also offer "Send by email".
   notes: {
     instagram: "lamhassan_77",
-    email: ""
+    email: "hassanssenyonjo774@gmail.com"
   },
 
   // Encouragement app — one is picked each day; visitors can tap for more.
@@ -65,14 +83,14 @@ window.SITE = {
   // Desktop background (an image, or a .mp4 video)
   wallpaper: "wallpaper.jpg",
 
-  // Background music — starts softly when someone unlocks the site.
+  // Background music — plays only when a visitor taps "Play music" in the menu bar.
   // Put the .mp3 next to index.html and write its name in src ("" = no music).
   music: {
     src: "music.mp3",
     title: "Carefree – Kevin MacLeod",
     // Credit required by the CC BY 4.0 licence — keep it (shown in About Me and on hover).
     credit: "Music: \"Carefree\" by Kevin MacLeod (incompetech.com), licensed under Creative Commons: By Attribution 4.0 — creativecommons.org/licenses/by/4.0/",
-    volume: 0.35          // 0 = silent, 1 = full volume
+    volume: 0.25          // 0 = silent, 1 = full volume
   },
 
   // Photos app — put the image next to index.html and list it here
@@ -88,14 +106,22 @@ window.SITE = {
   ],
 
   // Projects app — add one block per project
+  // { title, description, tags: [...], url (live site), code (GitHub link) }
   projects: [
-    // { title: "My first website", description: "What it does", url: "https://..." }
+    {
+      title: "iamhassan.online — interactive portfolio",
+      description: "A Mac-style personal site with an iPhone lock screen, draggable glass windows, music player, in-browser selfie camera, flashlight and a recruiter-friendly résumé view. Designed and shipped with AI-assisted development.",
+      tags: ["HTML", "CSS", "JavaScript", "AI-assisted", "Vercel"],
+      url: "https://www.iamhassan.online",
+      code: "https://github.com/hassanssenyonjo774-eng/portfolio"
+    }
   ],
 
-  // Social links in the dock
+  // Social links in the dock (on phones they're in the résumé instead)
   socials: {
+    linkedin: "https://www.linkedin.com/in/hassan-ssenyonjo-225558442",
+    github: "https://github.com/hassanssenyonjo774-eng",
     instagram: "https://www.instagram.com/lamhassan_77/",
-    x: "https://x.com/lamhassan77",
-    github: "https://github.com/hassanssenyonjo774-eng"
+    x: "https://x.com/lamhassan77"
   }
 };

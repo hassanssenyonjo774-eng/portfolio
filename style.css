@@ -69,6 +69,18 @@ a { color: var(--accent); }
   font-size: 13px; opacity: .85;
 }
 .lock-bar { width: 140px; height: 5px; border-radius: 3px; background: #fff; animation: nudge 2s infinite; }
+/* Recruiter mode button */
+.hire-btn {
+  margin-top: 14px; padding: 11px 20px; border-radius: 999px;
+  font-size: 15px; font-weight: 600;
+  background: rgba(255,255,255,.9); color: #111;
+  box-shadow: 0 8px 30px rgba(0,0,0,.3), inset 0 1px 0 #fff;
+  animation: drop .7s .5s both cubic-bezier(.2, .9, .3, 1.2);
+  transition: transform .15s;
+}
+.hire-btn:hover { transform: scale(1.04); }
+.hire-btn:active { transform: scale(.97); }
+
 /* Flashlight & camera buttons, like the iPhone lock screen */
 .lock-act {
   position: absolute !important; bottom: max(44px, calc(env(safe-area-inset-bottom) + 30px));
@@ -161,7 +173,10 @@ a { color: var(--accent); }
 .eq i:nth-child(4) { animation-delay: -.2s; }
 @keyframes eq { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
 .music-btn.paused .eq i { animation: none; transform: scaleY(.3); }
-.music-btn.paused .music-title { text-decoration: line-through; opacity: .6; }
+.music-btn.paused {
+  padding: 3px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.22);
+}
 
 /* ---------------- Dock ---------------- */
 .dock {
@@ -261,13 +276,17 @@ a { color: var(--accent); }
 /* Projects */
 .empty { text-align: center; padding: 40px 10px; color: var(--muted); line-height: 1.6; }
 .empty .big { font-size: 42px; margin-bottom: 8px; }
-.project { display: block; padding: 16px 18px; border-radius: 20px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); margin-bottom: 10px; text-decoration: none; color: var(--text); }
-.project:hover { background: rgba(255,255,255,.1); }
-.project p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.project { padding: 18px 20px; border-radius: 22px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); margin-bottom: 12px; }
+.project strong { font-size: 17px; }
+.project p { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 6px 0 12px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.tags span { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(255,159,10,.14); color: #ffc46b; border: 1px solid rgba(255,159,10,.25); }
+.tags.big span { font-size: 14px; padding: 7px 14px; background: rgba(255,255,255,.08); color: var(--text); border-color: rgba(255,255,255,.14); }
 
 /* Buttons */
 /* iOS-style capsule buttons */
 .btn {
+  display: inline-block; text-decoration: none; color: var(--text);
   padding: 11px 20px; border-radius: 999px; font-size: 15px; font-weight: 600;
   background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); box-shadow: var(--glass-shine);
   transition: background .15s, transform .12s;
@@ -300,6 +319,50 @@ a { color: var(--accent); }
 .boost-from { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
 .encourage-win .win-body { background: radial-gradient(circle at 50% 0%, rgba(255,159,10,.2), transparent 60%); }
 
+/* ---------------- Recruiter mode (résumé) ---------------- */
+.cv {
+  position: fixed; inset: 0; z-index: 250; overflow-y: auto; user-select: text;
+  background: rgba(10,10,14,.6);
+  backdrop-filter: blur(40px) saturate(160%); -webkit-backdrop-filter: blur(40px) saturate(160%);
+  padding: 24px 16px 48px; animation: fade .25s;
+}
+.cv[hidden] { display: none; }
+.cv-card {
+  max-width: 780px; margin: 0 auto; padding: 22px 34px 30px; border-radius: 30px;
+  background: var(--glass-dark); border: 1px solid rgba(255,255,255,.16);
+  box-shadow: var(--glass-shine), 0 30px 80px rgba(0,0,0,.4);
+}
+.cv-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+.cv-head { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; }
+.cv-head img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: center 20%; flex: none; border: 2px solid rgba(255,255,255,.3); }
+.cv-head h1 { font-size: clamp(28px, 5vw, 38px); font-weight: 700; letter-spacing: -.025em; line-height: 1.1; }
+.cv-role { color: var(--accent); font-weight: 600; font-size: 17px; margin-top: 4px; }
+.cv-contacts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.cv-contacts a {
+  display: inline-flex; align-items: center; gap: 7px; text-decoration: none; color: var(--text);
+  font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 999px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); transition: background .15s;
+}
+.cv-contacts a:hover { background: rgba(255,255,255,.15); }
+.cv-contacts svg { width: 15px; height: 15px; }
+.cv section { margin-top: 28px; }
+.cv h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 12px; }
+.cv section > p { line-height: 1.7; color: rgba(235,235,245,.88); margin-bottom: 10px; font-size: 15.5px; }
+.cv-foot { margin-top: 30px; text-align: center; font-size: 13px; color: var(--muted); }
+
+/* "Save as PDF" prints just the résumé on white paper */
+@media print {
+  body.cv-open > *:not(.cv) { display: none !important; }
+  html, body { height: auto; overflow: visible; background: #fff; }
+  .cv { position: static; overflow: visible; background: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 0; }
+  .cv-card { background: none; border: 0; box-shadow: none; color: #111; max-width: none; padding: 0; }
+  .cv .no-print, .cv .msg-row { display: none !important; }
+  .cv h1, .cv strong { color: #111; }
+  .cv section > p, .cv .project p, .cv h2, .cv-foot { color: #333; }
+  .cv-contacts a, .tags span, .tags.big span, .cv .project { color: #111; background: none; border: 1px solid #ccc; }
+  .cv-head img { border-color: #ddd; }
+}
+
 /* Terminal */
 .term { font-family: var(--mono); font-size: 13.5px; line-height: 1.6; color: #e4e4e7; background: rgba(8, 8, 10, .78); }
 .term .win-body { padding: 6px 20px 16px; }
@@ -310,7 +373,13 @@ a { color: var(--accent); }
 
 /* ---------------- Phones ---------------- */
 @media (max-width: 640px) {
-  .menu-hide, .music-title { display: none; }
+  .menu-hide { display: none; }
+  .music-btn:not(.paused) .music-title { display: none; }   /* phones: show "Play music", then just the bars */
+  .dock-link { display: none; }                             /* social links live in the résumé on phones */
+  .cv { padding: 10px 8px 30px; }
+  .cv-card { padding: 16px 18px 24px; border-radius: 24px; }
+  .cv-head img { width: 72px; height: 72px; }
+  .cv-bar .msg-row .btn:first-child { display: none; }      /* no printing from phones */
   .win { left: 8px !important; right: 8px; top: 38px !important; width: auto; height: calc(100dvh - 140px); border-radius: 26px; }
   .win-body { padding: 6px 18px 18px; }
   /* Dock stretches edge to edge and icons shrink to fit, so all of them fit on any phone */
