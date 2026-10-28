@@ -107,6 +107,12 @@ window.SITE = {
   // { title, description, tags: [...], url (live site), code (GitHub link) }
   projects: [
     {
+      title: "PassGo — AI travel & visa assistant",
+      description: "A travel web app that tells you which countries you can visit with your passport, with real visa data, an AI travel assistant, live exchange rates and Google sign-in. Built with React and Firebase using AI-assisted development.",
+      tags: ["React", "Firebase", "AI (Gemini)", "APIs", "Vercel"],
+      url: "https://passgo-tau.vercel.app"
+    },
+    {
       title: "iamhassan.online — interactive portfolio",
       description: "A Mac-style personal site with an iPhone lock screen, draggable glass windows, music player, in-browser selfie camera, flashlight and a recruiter-friendly résumé view. Designed and shipped with AI-assisted development.",
       tags: ["HTML", "CSS", "JavaScript", "AI-assisted", "Vercel"],
