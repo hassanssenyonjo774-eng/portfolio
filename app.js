@@ -357,11 +357,16 @@
         const list = S.encouragement || [];
         const q = body.querySelector(".boost-quote");
         const label = body.querySelector(".boost-label");
+        const from = body.querySelector(".boost-from");
+        // Entries are plain strings (Hassan's own words) or { text, by, source } quotes.
+        const item = () => typeof list[i] === "string" ? { text: list[i], by: S.name } : list[i];
         let i = Math.floor(Date.now() / 86400000) % list.length; // same one all day
         const show = () => {
+          const it = item();
           q.classList.remove("in");
           void q.offsetWidth; // restart the fade-in
-          q.textContent = list[i];
+          q.textContent = it.text;
+          from.innerHTML = `— ${esc(it.by)}${it.source ? `<small>${esc(it.source)}</small>` : ""}`;
           q.classList.add("in");
         };
         show();
@@ -374,7 +379,8 @@
         };
         body.querySelector("[data-act=copy]").onclick = (e) => {
           const b = e.currentTarget;
-          navigator.clipboard?.writeText(list[i]).then(() => { b.textContent = "Copied ✓"; setTimeout(() => (b.textContent = "Copy"), 1500); });
+          const it = item();
+          navigator.clipboard?.writeText(`“${it.text}” — ${it.by}${it.source ? `, ${it.source}` : ""}`).then(() => { b.textContent = "Copied ✓"; setTimeout(() => (b.textContent = "Copy"), 1500); });
         };
       }
     },

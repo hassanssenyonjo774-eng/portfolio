@@ -77,7 +77,19 @@ window.SITE = {
     "Be kind to yourself today. You're doing better than you think.",
     "One focused hour can move you further than a week of worrying.",
     "Ask the question. Send the message. Build the thing.",
-    "Someone out there is inspired by you, even if they haven't said it yet."
+    "Someone out there is inspired by you, even if they haven't said it yet.",
+
+    // Quotes from others: { text, by, source } — shown with their author instead of your name.
+    { text: "Education is the most powerful weapon which you can use to change the world.", by: "Nelson Mandela", source: "Speech in Johannesburg, 2003" },
+    { text: "Education is the passport to the future, for tomorrow belongs to those who prepare for it today.", by: "Malcolm X", source: "1964" },
+    { text: "Intelligence plus character — that is the goal of true education.", by: "Martin Luther King Jr.", source: "“The Purpose of Education”, 1947" },
+    { text: "Learning without thought is labour lost; thought without learning is perilous.", by: "Confucius", source: "The Analects" },
+    { text: "The roots of education are bitter, but the fruit is sweet.", by: "Aristotle", source: "as quoted by Diogenes Laërtius" },
+    { text: "The mind is not a vessel to be filled, but a fire to be kindled.", by: "Plutarch", source: "paraphrased from “On Listening”" },
+    { text: "Seeking knowledge is an obligation upon every Muslim.", by: "Prophet Muhammad ﷺ", source: "Hadith, Sunan Ibn Mājah" },
+    { text: "Wisdom is not a product of schooling but of the lifelong attempt to acquire it.", by: "Albert Einstein", source: "Letter, 1954" },
+    { text: "Nothing in life is to be feared, it is only to be understood.", by: "Marie Curie" },
+    { text: "From that moment, I understood the pathway from slavery to freedom.", by: "Frederick Douglass", source: "on learning to read, Narrative of the Life of Frederick Douglass, 1845" }
   ],
 
   // Desktop background (an image, or a .mp4 video)
