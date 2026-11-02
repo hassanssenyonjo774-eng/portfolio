@@ -395,7 +395,7 @@
           help: "whoami · about · skills · contact · socials · goals · clear",
           whoami: `${S.name} — ${S.tagline}`,
           about: S.bio[0],
-          skills: (S.skills || []).map((s) => "• " + s).join("\n"),
+          skills: skillGroups().map((g) => (g.group ? g.group + "\n" : "") + g.items.map((s) => "  • " + s).join("\n")).join("\n\n"),
           contact: S.contact ? `email: ${S.contact.email}\nphone: ${S.contact.phoneDisplay || S.contact.phone}\nlinkedin: ${S.contact.linkedin}` : "",
           goals: "Build full-stack apps and AI-driven systems that solve real problems.",
           socials: Object.entries(S.socials).map(([k, v]) => `${k}: ${v}`).join("\n")
@@ -440,6 +440,24 @@
   const cv = $("#cv");
   const plain = (s) => String(s).replace(/\*\*/g, "");
 
+  // Skills are either plain strings or { group, items } — plain strings form one untitled group.
+  function skillGroups() {
+    const list = S.skills || [];
+    const loose = list.filter((s) => typeof s === "string");
+    return [...list.filter((s) => typeof s !== "string"), ...(loose.length ? [{ items: loose }] : [])];
+  }
+
+  function educationHTML(E) {
+    return `<section><h2>Education &amp; training</h2>
+      <div class="cv-edu">
+        <div class="cv-edu-head"><strong>${esc(E.program)}</strong>${E.status ? `<span class="cv-status">${esc(E.status)}</span>` : ""}</div>
+        <p class="cv-edu-school">${esc(E.school)}</p>
+        ${E.note ? `<p class="cv-edu-note">${esc(E.note)}</p>` : ""}
+        ${(E.courses || E.certifications || []).map((c) => `
+          <div class="cv-cert"><span class="cv-code">${esc(c.code)}</span><span>${esc(c.title)}</span>${c.status ? `<em>${esc(c.status)}</em>` : ""}</div>`).join("")}
+      </div></section>`;
+  }
+
   function renderCV() {
     const C = S.contact || {};
     const wa = C.phone ? "https://wa.me/" + C.phone.replace(/\D/g, "") : "";
@@ -471,7 +489,9 @@
           <h2>Summary</h2>
           ${S.bio.filter((p) => !/^\*\*.*\*\*$/.test(p)).map((p) => `<p>${esc(plain(p))}</p>`).join("")}
         </section>
-        ${S.skills ? `<section><h2>Skills</h2><div class="tags big">${S.skills.map((s) => `<span>${esc(s)}</span>`).join("")}</div></section>` : ""}
+        ${S.education ? educationHTML(S.education) : ""}
+        ${S.skills ? `<section><h2>Skills</h2>${skillGroups().map((g) => `
+          <div class="cv-skill">${g.group ? `<h3>${esc(g.group)}</h3>` : ""}<div class="tags big">${g.items.map((s) => `<span>${esc(s)}</span>`).join("")}</div></div>`).join("")}</section>` : ""}
         ${S.projects.length ? `<section><h2>Projects</h2>${S.projects.map(projectCard).join("")}</section>` : ""}
         <p class="cv-foot">${esc(location.hostname.replace(/^www\./, "") || "iamhassan.online")}</p>
       </div>`;

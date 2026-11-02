@@ -349,6 +349,16 @@ a { color: var(--accent); }
 .cv section { margin-top: 28px; }
 .cv h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 12px; }
 .cv section > p { line-height: 1.7; color: rgba(235,235,245,.88); margin-bottom: 10px; font-size: 15.5px; }
+.cv-skill h3 { font-size: 14px; font-weight: 600; margin: 14px 0 8px; }
+.cv-skill .tags { margin-bottom: 0; }
+.cv-edu { padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
+.cv-edu-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 17px; }
+.cv-status, .cv-cert em { font-size: 12px; font-weight: 600; font-style: normal; padding: 3px 10px; border-radius: 999px; background: rgba(255,159,10,.14); color: #ffc46b; border: 1px solid rgba(255,159,10,.25); }
+.cv-edu-school { margin-top: 4px; color: rgba(235,235,245,.88); }
+.cv-edu-note { margin: 6px 0 10px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.cv-cert { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid rgba(255,255,255,.08); font-size: 15px; }
+.cv-cert em { margin-left: auto; }
+.cv-code { font-size: 12px; font-weight: 700; letter-spacing: .05em; min-width: 52px; color: var(--accent); }
 .cv-foot { margin-top: 30px; text-align: center; font-size: 13px; color: var(--muted); }
 
 /* "Save as PDF" prints just the résumé on white paper */
@@ -362,6 +372,11 @@ a { color: var(--accent); }
   .cv section > p, .cv .project p, .cv h2, .cv-foot { color: #333; }
   .cv-contacts a, .tags span, .tags.big span, .cv .project { color: #111; background: none; border: 1px solid #ccc; }
   .cv-head img { border-color: #ddd; }
+  .cv-edu { background: none; border: 1px solid #ccc; }
+  .cv-edu-school, .cv-edu-note { color: #333; }
+  .cv-status, .cv-cert em { color: #111; background: none; border: 1px solid #ccc; }
+  .cv-cert { border-top-color: #ddd; }
+  .cv-skill, .cv-edu, .cv .project { break-inside: avoid; }
 }
 
 /* Terminal */

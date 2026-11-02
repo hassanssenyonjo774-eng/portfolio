@@ -9,23 +9,39 @@ window.SITE = {
   menuName: "hassan",            // small name in the top-left menu bar
 
   headline: "Hi, I'm Hassan Ssenyonjo.",
-  tagline: "AI-Assisted Web Developer",
+  tagline: "AI-Assisted Developer · CAIDP Student",
 
   bio: [
     "I'm an AI-assisted web developer. I use modern AI coding tools such as Claude Code to plan, build, debug and ship real websites — quickly and to a high standard.",
     "I designed and launched this site end to end: an interactive, Mac-style portfolio with a music player, selfie camera and custom domain, deployed through GitHub and Vercel.",
-    "I focus on clean, responsive interfaces and on turning ideas into working products, and I'm growing toward full-stack apps and AI-powered automation for businesses.",
+    "I'm currently training as a Certified AI Developer Professional (CAIDP) at the London International Studies & Research Centre in Dubai — learning to build and ship real AI-powered apps with tools like Lovable, Azure AI Foundry and Gemini — and I'm growing toward full-stack AI products and automation for businesses.",
     "**Learn by building. Ship, then improve.**"
   ],
 
-  // Skills — shown in the résumé and the Terminal
+  // Education — shown in the résumé. Change status to "Completed" (and add the year) when you finish.
+  education: {
+    school: "London International Studies & Research Centre (LISRC), Dubai",
+    program: "Certified AI Developer Professional (CAIDP)",
+    status: "In progress",
+    note: "Part of the AI & Data Science programme · accredited by KHDA (UAE Government), CPD London (UK) and the British Chamber of Commerce · 4 courses · 15 modules",
+    courses: [
+      { code: "01", title: "AI Foundations — Understand AI" },
+      { code: "02", title: "No-Code AI App Builder Foundations" },
+      { code: "03", title: "Azure AI Foundry + Lovable" },
+      { code: "04", title: "Creative & Video AI with Gemini" }
+    ]
+  },
+
+  // Skills — shown in the résumé and the Terminal (CAIDP course + hands-on work)
   skills: [
-    "AI-assisted development (Claude Code, prompt engineering)",
-    "HTML, CSS & JavaScript",
-    "Responsive, mobile-first UI design",
-    "Git, GitHub & Vercel deployment",
-    "Custom domains, DNS & HTTPS",
-    "Browser APIs (camera, audio, clipboard)"
+    { group: "AI foundations", items: ["LLMs & generative AI", "Prompt engineering", "ChatGPT", "Claude", "Gemini"] },
+    { group: "AI-assisted coding", items: ["Claude Code", "Google AI Studio"] },
+    { group: "AI app builders", items: ["Lovable", "Bolt.new", "v0 by Vercel", "Replit Agent", "Base44", "GitHub Spark"] },
+    { group: "Building & shipping apps", items: ["MVP planning & PRDs", "Prompt-to-app", "SaaS landing pages & portfolios", "Testing & deployment"] },
+    { group: "AI model platforms", items: ["Azure AI Foundry", "OpenAI", "Mistral", "Model deployment", "AI agent blueprints"] },
+    { group: "Creative & media AI", items: ["Gemini", "Vertex AI", "AI image", "AI audio", "AI video"] },
+    { group: "Backends, auth & payments", items: ["Firebase", "Supabase", "Stripe", "Clerk"] },
+    { group: "Web development", items: ["HTML, CSS & JavaScript", "React", "Git & GitHub", "Vercel", "Custom domains, DNS & HTTPS"] }
   ],
 
   // Contact — shown in the résumé (Recruiter mode)
