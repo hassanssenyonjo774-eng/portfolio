@@ -429,7 +429,7 @@
         <p>${esc(p.description || "")}</p>
         ${p.tags ? `<div class="tags">${p.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</div>` : ""}
         <div class="msg-row">
-          ${p.url ? `<a class="btn primary" href="${esc(p.url)}" target="_blank" rel="noopener">View live</a>` : ""}
+          ${p.url ? `<a class="btn primary" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.urlLabel || "View live")}</a>` : ""}
           ${p.code ? `<a class="btn" href="${esc(p.code)}" target="_blank" rel="noopener">View code</a>` : ""}
         </div>
       </div>`;

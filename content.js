@@ -39,7 +39,7 @@ window.SITE = {
     { group: "AI app builders", items: ["Lovable", "Bolt.new", "v0 by Vercel", "Replit Agent", "Base44", "GitHub Spark"] },
     { group: "Building & shipping apps", items: ["MVP planning & PRDs", "Prompt-to-app", "SaaS landing pages & portfolios", "Testing & deployment"] },
     { group: "AI model platforms", items: ["Azure AI Foundry", "OpenAI", "Mistral", "Model deployment", "AI agent blueprints"] },
-    { group: "Creative & media AI", items: ["Gemini", "Vertex AI", "AI image", "AI audio", "AI video"] },
+    { group: "Creative & media AI", items: ["Google Flow", "Gemini", "Vertex AI", "AI image", "AI audio", "AI video", "Short-form video scripting"] },
     { group: "Backends, auth & payments", items: ["Firebase", "Supabase", "Stripe", "Clerk"] },
     { group: "Web development", items: ["HTML, CSS & JavaScript", "React", "Git & GitHub", "Vercel", "Custom domains, DNS & HTTPS"] }
   ],
@@ -134,6 +134,13 @@ window.SITE = {
   // Projects app — add one block per project
   // { title, description, tags: [...], url (live site), code (GitHub link) }
   projects: [
+    {
+      title: "Money & Business Tips — AI-made short videos",
+      description: "An Instagram channel of short money and business lessons that I script with Claude and produce as videos with Google Flow, from idea and script to visuals, voice and the final edit.",
+      tags: ["AI video", "Google Flow", "Claude", "Scriptwriting", "Instagram Reels"],
+      url: "https://www.instagram.com/moneybusinesstips/",
+      urlLabel: "Watch the videos"
+    },
     {
       title: "PassGo — AI travel & visa assistant",
       description: "A travel web app that tells you which countries you can visit with your passport, with real visa data, an AI travel assistant, live exchange rates and Google sign-in. Built with React and Firebase using AI-assisted development.",
