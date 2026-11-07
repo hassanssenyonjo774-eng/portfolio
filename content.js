@@ -9,12 +9,12 @@ window.SITE = {
   menuName: "hassan",            // small name in the top-left menu bar
 
   headline: "Hi, I'm Hassan Ssenyonjo.",
-  tagline: "AI-Assisted Developer · CAIDP Student",
+  tagline: "AI App Builder · Prompt Engineer · AI Video Creator",
 
   bio: [
-    "I'm an AI-assisted web developer. I use modern AI coding tools such as Claude Code to plan, build, debug and ship real websites — quickly and to a high standard.",
-    "I designed and launched this site end to end: an interactive, Mac-style portfolio with a music player, selfie camera and custom domain, deployed through GitHub and Vercel.",
-    "I'm currently training as a Certified AI Developer Professional (CAIDP) at the London International Studies & Research Centre in Dubai — learning to build and ship real AI-powered apps with tools like Lovable, Azure AI Foundry and Gemini — and I'm growing toward full-stack AI products and automation for businesses.",
+    "I use AI to build apps, websites and content. I plan, prompt, build and ship real products with tools like Claude Code, Google AI Studio and Lovable — quickly and to a high standard.",
+    "My work so far: PassGo, an AI travel and visa assistant with live data and Google sign-in; this interactive Mac-style portfolio on its own domain; and Money & Business Tips, an Instagram channel of short videos I script with Claude and produce with Google Flow.",
+    "I hold a Prompt Engineering certificate from the 1 Million Prompters initiative (Dubai Future Foundation), and I'm training as a Certified AI Developer Professional (CAIDP) at the London International Studies & Research Centre in Dubai.",
     "**Learn by building. Ship, then improve.**"
   ],
 
