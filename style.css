@@ -354,6 +354,9 @@ a { color: var(--accent); }
 .cv-edu { padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
 .cv-edu-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 17px; }
 .cv-status, .cv-cert em { font-size: 12px; font-weight: 600; font-style: normal; padding: 3px 10px; border-radius: 999px; background: rgba(255,159,10,.14); color: #ffc46b; border: 1px solid rgba(255,159,10,.25); }
+.cv-status.done { background: rgba(48,209,88,.15); color: #6ee7a0; border-color: rgba(48,209,88,.3); }
+.cv-certificate + .cv-certificate { margin-top: 10px; }
+.cv-certificate .btn { margin-top: 2px; }
 .cv-edu-school { margin-top: 4px; color: rgba(235,235,245,.88); }
 .cv-edu-note { margin: 6px 0 10px; font-size: 13px; color: var(--muted); line-height: 1.5; }
 .cv-cert { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid rgba(255,255,255,.08); font-size: 15px; }
@@ -376,6 +379,7 @@ a { color: var(--accent); }
   .cv-edu-school, .cv-edu-note { color: #333; }
   .cv-status, .cv-cert em { color: #111; background: none; border: 1px solid #ccc; }
   .cv-cert { border-top-color: #ddd; }
+  .cv-certificate .btn { display: none; }
   .cv-skill, .cv-edu, .cv .project { break-inside: avoid; }
 }
 

@@ -32,6 +32,17 @@ window.SITE = {
     ]
   },
 
+  // Certificates you've earned — shown in the résumé. "file" is a PDF next to index.html.
+  certificates: [
+    {
+      title: "1 Million Prompters — Prompt Engineering for AI",
+      issuer: "Dubai Future Foundation & Dubai Centre for Artificial Intelligence",
+      note: "Initiative launched by H.H. Sheikh Hamdan bin Mohammed bin Rashid Al Maktoum, Crown Prince of Dubai",
+      status: "Completed",
+      file: "certificate-1-million-prompters.pdf"
+    }
+  ],
+
   // Skills — shown in the résumé and the Terminal (CAIDP course + hands-on work)
   skills: [
     { group: "AI foundations", items: ["LLMs & generative AI", "Prompt engineering", "ChatGPT", "Claude", "Gemini"] },

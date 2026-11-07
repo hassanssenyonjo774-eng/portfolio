@@ -489,6 +489,13 @@
           <h2>Summary</h2>
           ${S.bio.filter((p) => !/^\*\*.*\*\*$/.test(p)).map((p) => `<p>${esc(plain(p))}</p>`).join("")}
         </section>
+        ${S.certificates?.length ? `<section><h2>Certificates</h2>${S.certificates.map((c) => `
+          <div class="cv-edu cv-certificate">
+            <div class="cv-edu-head"><strong>${esc(c.title)}</strong>${c.status ? `<span class="cv-status done">${esc(c.status)}</span>` : ""}</div>
+            <p class="cv-edu-school">${esc(c.issuer)}</p>
+            ${c.note ? `<p class="cv-edu-note">${esc(c.note)}</p>` : ""}
+            ${c.file ? `<a class="btn" href="${esc(c.file)}" target="_blank" rel="noopener">📄 View certificate</a>` : ""}
+          </div>`).join("")}</section>` : ""}
         ${S.education ? educationHTML(S.education) : ""}
         ${S.skills ? `<section><h2>Skills</h2>${skillGroups().map((g) => `
           <div class="cv-skill">${g.group ? `<h3>${esc(g.group)}</h3>` : ""}<div class="tags big">${g.items.map((s) => `<span>${esc(s)}</span>`).join("")}</div></div>`).join("")}</section>` : ""}
