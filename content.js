@@ -159,6 +159,12 @@ window.SITE = {
       url: "https://passgo-tau.vercel.app"
     },
     {
+      title: "Elite Fitness Club — gym website",
+      description: "A five-page website for a Dubai gym: classes, trainers, membership plans, a free-trial form that saves each request to a database, and an \"Ask Elite\" chat that answers common questions. Built with Lovable from a CAIDP class brief.",
+      tags: ["Lovable", "React", "Tailwind CSS", "Supabase", "Prompting"],
+      url: "https://fit-club-four-and-three.lovable.app"
+    },
+    {
       title: "iamhassan.online — interactive portfolio",
       description: "A Mac-style personal site with an iPhone lock screen, draggable glass windows, music player, in-browser selfie camera, flashlight and a recruiter-friendly résumé view. Designed and shipped with AI-assisted development.",
       tags: ["HTML", "CSS", "JavaScript", "AI-assisted", "Vercel"],
