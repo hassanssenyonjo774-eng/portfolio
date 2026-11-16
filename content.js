@@ -162,7 +162,9 @@ window.SITE = {
       title: "Elite Fitness Club — gym website",
       description: "A five-page website for a Dubai gym: classes, trainers, membership plans, a free-trial form that saves each request to a database, and an \"Ask Elite\" chat that answers common questions. Built with Lovable from a CAIDP class brief.",
       tags: ["Lovable", "React", "Tailwind CSS", "Supabase", "Prompting"],
-      url: "https://fit-club-four-and-three.lovable.app"
+      url: "https://fit-club-four-and-three.lovable.app",
+      video: "elite-fitness-ad.mp4",
+      videoLabel: "Watch the 30-second ad"
     },
     {
       title: "iamhassan.online — interactive portfolio",

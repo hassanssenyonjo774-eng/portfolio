@@ -432,6 +432,10 @@
           ${p.url ? `<a class="btn primary" href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.urlLabel || "View live")}</a>` : ""}
           ${p.code ? `<a class="btn" href="${esc(p.code)}" target="_blank" rel="noopener">View code</a>` : ""}
         </div>
+        ${p.video ? `<details class="project-video">
+          <summary class="btn">▶ ${esc(p.videoLabel || "Watch the video")}</summary>
+          <video controls playsinline preload="none" src="${esc(p.video)}"></video>
+        </details>` : ""}
       </div>`;
   }
 

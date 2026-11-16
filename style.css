@@ -281,6 +281,12 @@ a { color: var(--accent); }
 .project p { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 6px 0 12px; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .tags span { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(255,159,10,.14); color: #ffc46b; border: 1px solid rgba(255,159,10,.25); }
+/* Optional video under a project (content.js: video, videoLabel) */
+.project-video { margin-top: 10px; }
+.project-video summary { list-style: none; cursor: pointer; }
+.project-video summary::-webkit-details-marker { display: none; }
+.project-video video { display: block; margin: 14px auto 2px; max-width: 100%; max-height: min(70vh, 640px); border-radius: 18px; border: 1px solid rgba(255,255,255,.14); background: #000; }
+@media print { .project-video { display: none; } }
 .tags.big span { font-size: 14px; padding: 7px 14px; background: rgba(255,255,255,.08); color: var(--text); border-color: rgba(255,255,255,.14); }
 
 /* Buttons */
