@@ -76,6 +76,13 @@ window.SITE = {
     text: "Tap here to send me a message — or swipe up to look around."
   },
 
+  // Calendar app — visitors request a meeting; it reaches you on WhatsApp or by email (uses the contact details above).
+  booking: {
+    timezone: "Asia/Dubai",   // your time zone, so you see requests in your own time
+    from: 9, to: 18,          // earliest and latest start hour offered (24-hour clock, visitor's time)
+    daysAhead: 60             // how far ahead people can book
+  },
+
   // Notes app — messages are sent to you as an Instagram DM.
   // Optional: add your email in quotes to also offer "Send by email".
   notes: {
