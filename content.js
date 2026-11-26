@@ -174,6 +174,12 @@ window.SITE = {
       videoLabel: "Watch the 30-second ad"
     },
     {
+      title: "Skyline Properties — real-estate website",
+      description: "A premium real-estate site for a Business Bay, Dubai agency. It has apartment listings with their own detail pages and photo galleries, enquiry forms that save each lead to a secured database, a private admin dashboard to track leads, and WhatsApp and click-to-call buttons. Built with Lovable from a CAIDP class brief.",
+      tags: ["Lovable", "React", "Tailwind CSS", "Supabase", "Row Level Security"],
+      url: "https://skyline-properties-dubai.lovable.app"
+    },
+    {
       title: "iamhassan.online — interactive portfolio",
       description: "A Mac-style personal site with an iPhone lock screen, draggable glass windows, music player, in-browser selfie camera, flashlight and a recruiter-friendly résumé view. Designed and shipped with AI-assisted development.",
       tags: ["HTML", "CSS", "JavaScript", "AI-assisted", "Vercel"],
